@@ -12,10 +12,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.anup.blog.payloads.ApiResponse;
 import com.anup.blog.payloads.PostDTO;
+import com.anup.blog.payloads.PostResponse;
 import com.anup.blog.services.PostService;
 
 @RestController
@@ -55,10 +57,13 @@ public class PostController {
 	}
 	
 	@GetMapping("/posts")
-	public ResponseEntity<List<PostDTO>> getAllPosts(){
+	public ResponseEntity<PostResponse> getAllPosts(
+			@RequestParam(value = "pageNumber", defaultValue = "0", required = false) Integer pageNumber,
+			@RequestParam(value = "pageSize", defaultValue = "5", required = false) Integer pageSize
+			){
 		
-		List<PostDTO> posts= postService.getAllPosts();
-		return new ResponseEntity<List<PostDTO>>(posts, HttpStatus.OK);
+		PostResponse postResponse = postService.getAllPosts(pageNumber, pageSize);
+		return new ResponseEntity<PostResponse>(postResponse, HttpStatus.OK);
 	}
 	
 	@GetMapping("/posts/{postId}")
