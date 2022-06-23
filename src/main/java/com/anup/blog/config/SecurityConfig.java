@@ -39,7 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		//below is basic authentication technique in spring security
 		http.csrf().disable()
 					.authorizeHttpRequests()
-					.antMatchers("/api/auth/login").permitAll()
+					.antMatchers("/api/auth/**").permitAll()
 					.antMatchers(HttpMethod.GET).permitAll()
 					.anyRequest()
 					.authenticated()

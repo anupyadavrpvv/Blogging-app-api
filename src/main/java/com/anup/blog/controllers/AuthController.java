@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.anup.blog.exceptions.ApiException;
 import com.anup.blog.payloads.JwtAuthRequest;
 import com.anup.blog.payloads.JwtAuthResponse;
+import com.anup.blog.payloads.UserDTO;
 import com.anup.blog.security.JwtTokenHelper;
+import com.anup.blog.services.UserService;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -30,6 +32,9 @@ public class AuthController {
 	
 	@Autowired
 	private AuthenticationManager authenticationManager;
+	
+	@Autowired
+	private UserService userService;
 	
 	@PostMapping("/login")
 	public ResponseEntity<JwtAuthResponse> createToken(
@@ -62,6 +67,16 @@ public class AuthController {
 			throw new ApiException("Invalid username or password");
 		
 		}
+		
+	}
+	
+	//register new user api
+	@PostMapping("/register")
+	public ResponseEntity<UserDTO> registerUser(@RequestBody UserDTO userDTO){
+		
+		UserDTO registerNewUser = this.userService.registerNewUser(userDTO);
+		
+		return new ResponseEntity<UserDTO>(registerNewUser, HttpStatus.CREATED);
 		
 	}
 	
